@@ -2,8 +2,8 @@
 
 // Array of product objects
 let ArrProducts = [
-  { id: 1, name: "Rolex", image: "./rolex.jpg", price: "18,000", rating: 5 },
-  { id: 2, name: "Casio", image: "./casio.jpg", price: "8,000", rating: 4 },
+  { id: 1, name: "Rolex", image: "images/rolex.jpg", price: "18,000", rating: 5 },
+  { id: 2, name: "Casio", image: "casio.jpg", price: "8,000", rating: 4 },
   { id: 3, name: "Apple", image: "google.jpg", price: "57,990", rating: 5 },
   { id: 4, name: "G-Shock", image: "gshock.jpg", price: "16,000", rating: 4.5 },
   { id: 5, name: "Timex", image: "timex.jpg", price: "4,000", rating: 3 },
