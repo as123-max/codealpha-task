@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Collection</title>
+    <link rel="icon" href="./images/logo.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script type="module" src="./index.js"></script>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="brand">
+                <img src="logo.jpg" alt="Store Logo">
+                <!-- Alternatively, use text -->
+                <!-- <span>Online Store</span> -->
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="product.html">Products</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="About.html">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+                <li class="dropdown">
+                    <a href="login.html" id="account">Login</a>
+                    <div id="accountDropdown" class="dropdown-content">
+                        <a href="#"> Hi, <span id="loggedUserFName"></span></a>
+                        <a href="#" ><button id="logout">Logout</button></a>
+                    </div>
+                </li>
+            </ul>
+</head>
+<body>
+    
+            <div id="hamburger" class="hamburger">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+   
+    <div class="container2">
+        <header>
+            <div class="basket">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="quantity">0</span>
+
+            </div>
+        </header>
+        <div class="Products">
+
+        </div>
+    </div>
+  
+    <div class="cart">
+        <h3>Your Cart</h3>
+        <ul class="productList"></ul>
+        <div class="checkout">
+            <div class="total" onclick="redirectToCart()"><small>Subtotal(0 items)₹0</small></div>
+            <div class="close">Close</div>
+        </div>
+    </div>
+    </body>
+    <br>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 E-Cart</p>
+            <ul class="footer-links">
+                <li><a href="About.html">Privacy</a></li>
+                <li><a href="About.html">Terms</a></li>
+                <li><a href="Contact.html">Support</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js"></script>
+    <script src="firebaseauth.js" defer></script>
+    
+    <script>
+        // Function to handle redirection to cart.html
+        function redirectToCart() {
+          // You can store checkout details in localStorage if needed
+          localStorage.setItem('checkout', JSON.stringify(checkOutList));
+      
+          // Redirect to cart.html
+          window.location.href = 'cart.html';
+        }
+      </script>
+</body>
+</html>

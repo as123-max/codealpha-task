@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="./images/logo.jpg" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            background-image: url('./back7.jpg');
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .cart {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .cart-item img {
+            width: 100px;
+        }
+        .item-details {
+            flex: 2;
+            margin-left: 20px;
+        }
+        .item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        .item-quantity button {
+            margin: 0 5px;
+        }
+        .cart-total {
+            text-align: right;
+            font-size: 1.5em;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 15px;
+            background-color: #28a745;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .checkout-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .item-details {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body >
+    
+    <div class="container">
+        <h1><b>Your Shopping Cart</b></h1>
+        <div class="cart">
+            <ul class="productList"></ul>
+            <div class="cart-total total">Total: ₹0</div>
+            <a href="payment.html" class="checkout-btn">Proceed to Checkout</a>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        window.onload = function() {
+          // Retrieve the checkout list from localStorage
+          const checkout = JSON.parse(localStorage.getItem('checkout'));
+
+          // Select the product list and total display elements
+          let productList = document.querySelector('.productList');
+          let totalDisplay = document.querySelector('.total');
+
+          if (checkout && checkout.length > 0) {
+            checkout.forEach(item => {
+              if (item) {
+                let li = document.createElement('li');
+                li.className = 'cart-item'; // Assign class for styling
+                li.innerHTML = `
+                  <img src="images/${item.image}" alt="${item.name}">
+                  <div class="item-details">
+                    <h3 style="color: #33ff33;">${item.name}</h3>
+                    <p style="color:#33ff33;">Price: ₹${item.price}</p>
+                    <div class="item-quantity">
+                      <span style="color: #33ff33;">Quantity: ${item.quantity}</span>
+                    </div>
+                  </div>
+                `;
+                productList.appendChild(li);
+              }
+            });
+
+            // Calculate and display total price
+            let total = checkout.reduce((sum, item) => 
+              item ? sum + (parseInt(item.price.replace(/,/g, '')) * item.quantity) : sum, 0
+            );
+            totalDisplay.innerText = `Total: ₹${total.toLocaleString()}`;
+            localStorage.setItem('totalAmount', total);
+          } else {
+            // If there are no items in the cart
+            totalDisplay.innerText = 'Your cart is empty';
+            productList.innerHTML = `<li class="cart-item"><h2>Your cart is empty</h2></li>`;
+          }
+        };
+    </script>
+</body>
+</html>

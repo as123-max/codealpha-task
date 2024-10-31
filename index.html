@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Store</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="icon" href="./images/logo.jpg" type="image/x-icon" >
+    <script type="module" src="./index.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="brand">
+                <img src="logo.jpg" alt="Store Logo">
+            </a>
+            <div class="hamburger" id="hamburger">&#9776;</div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="product.html">Products</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="About.html">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+                <li class="dropdown">
+                    <a href="login.html" id="account">Login</a>
+                    <div id="accountDropdown" class="dropdown-content">
+                        <a href="#"> Hi, <span id="loggedUserFName"></span></a>
+                        <a href="#" ><button id="logout">Logout</button></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Our Exclusive Collection</h1>
+            <a href="product.html" class="btn-explore">Explore</a>
+        </div>
+    </section>
+    <main>
+        <!-- Main content here -->
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 E-Cart. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="About.html">Privacy Policy</a></li>
+                <li><a href="About.html">Terms of Service</a></li>
+                <li><a href="Contact.html">Support</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Firebase and JavaScript Files -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js"></script>
+    <script src="firebaseauth.js" defer></script>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active'); // Toggle active class
+        });
+
+        // Optional: Close dropdown if clicked outside
+        window.addEventListener('click', (event) => {
+            if (!hamburger.contains(event.target) && !navLinks.contains(event.target)) {
+                navLinks.classList.remove('active'); // Close dropdown
+            }
+        });
+    </script>
+</body>
+</html>

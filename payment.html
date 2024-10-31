@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 40%;
+    margin: 100px auto;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+h1,h2{
+    text-align: center;
+    padding-top: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+label {
+    font-weight: bold;
+}
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+.payment-methods {
+    display: flex;
+    justify-content: space-around;
+}
+.payment-methods button {
+    width: 45%;
+    padding: 10px;
+    cursor: pointer;
+}
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.submit-btn :hover{
+    color: #f4f4f4;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Payment Gateway</h1>
+    <div class="container">
+        
+        <form id="payment-form" method="POST">
+            <!-- Customer Details -->
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" readonly required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" readonly required>
+            <br><br>
+            <p>Your total amount is: <span id="totalAmount"></span></p>
+            <br>
+            <h3>Select Payment Method</h3>
+            <br>
+            <div class="payment-methods">
+                <button type="button" id="paypal-button">G-Pay</button>
+                <button type="button" id="card-button">Card</button>
+            </div>
+
+            <div id="card-details" style="display:none;">
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" name="card_number" placeholder="1234-5678-9101-1121">
+                <label for="expiry-date">Expiry Date</label>
+                <input type="text" id="expiry-date" name="expiry_date" placeholder="MM/YY">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" placeholder="123">
+            </div>
+            <br>
+            <button type="button" class="submit-btn" id="payNowButton">Pay Now</button>
+            <div id="paymentMessage" style="display:none; color: green; margin-top: 20px; text-align: center;">Transaction Completed</div>
+        </form>
+    </div>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            
+            apiKey: "AIzaSyD8JEbLux-HMemZc5Etr51f9EYW-e1j3r8",
+  authDomain: "e-cart-52295.firebaseapp.com",
+  databaseURL: "https://e-cart-52295-default-rtdb.firebaseio.com",
+  projectId: "e-cart-52295",
+  storageBucket: "e-cart-52295.appspot.com",
+  messagingSenderId: "500208609525",
+  appId: "1:500208609525:web:44ad053fd6c08952d3fdbc",
+  measurementId: "G-J7VBXRDM3N"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Retrieve and display total amount from localStorage
+        const totalAmount = localStorage.getItem('totalAmount');
+        document.getElementById('totalAmount').innerText = `₹${parseInt(totalAmount).toLocaleString()}`;
+
+        // Authenticate user and get Firestore data
+        let storedUserData = {};
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    // User is signed in, retrieve user data from Firestore
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        storedUserData = userDoc.data();
+                        document.getElementById('name').value = `${storedUserData.firstName} ${storedUserData.lastName}`;
+                        document.getElementById('email').value = storedUserData.email;
+                    } else {
+                        alert("User data not found.");
+                    }
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                }
+            } else {
+                alert("Please sign in to proceed with payment.");
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Toggle payment method details
+        document.getElementById('card-button').addEventListener('click', function() {
+            document.getElementById('card-details').style.display = 'block';
+        });
+
+        document.getElementById('paypal-button').addEventListener('click', function() {
+            document.getElementById('card-details').style.display = 'none';
+        });
+
+        // Process payment logic
+        document.getElementById('payNowButton').addEventListener('click', async function(event) {
+            event.preventDefault();
+
+            // Verify user input with stored Firestore data
+            const nameInput = document.getElementById('name').value;
+            const emailInput = document.getElementById('email').value;
+
+            if (nameInput === `${storedUserData.firstName} ${storedUserData.lastName}` && emailInput === storedUserData.email) {
+                document.getElementById('paymentMessage').style.display = 'block';
+                window.location.href = 'success.html';
+            } else {
+                alert("User details do not match. Please verify your credentials.");
+            }
+        });
+    </script>
+</body>
+</html>
